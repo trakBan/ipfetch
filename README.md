@@ -1,8 +1,8 @@
 # ipfetch
-Neofetch like tool that can lookup IPs.
+Neofetch like tool that can lookup IPs. 🌎
 
-
-https://user-images.githubusercontent.com/81049050/158080892-24800c75-08f5-4e4a-ab16-f4f566007d5c.mp4
+Example
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/81049050/158081113-9c14ac50-5f8d-42e1-ba01-da2d873ea520.gif)
 
 # How to install?
 
