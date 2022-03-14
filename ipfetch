@@ -9,6 +9,7 @@ fi
 
 # Replacing spaces with underscores
 sed -i 's/ /_/g' ip.json
+sed -i 's/\\//g' ip.json
 
 # Uses grep to extract json data
 ip=`grep -o '"ip":"[^"]*' ip.json | grep -o '[^"]*$'`
@@ -19,9 +20,10 @@ country=`grep -o '"country":"[^"]*' ip.json | grep -o '[^"]*$'`
 timezone=`grep -o '"timezone":"[^"]*' ip.json | grep -o '[^"]*$'`
 latitude=`python3 -c "import sys, json; file=open('ip.json'); dr=file.read(); data=json.loads(dr); print(data['latitude'])"` >/dev/null 2>&1
 longitude=`python3 -c "import sys, json; file=open('ip.json'); dr=file.read(); data=json.loads(dr); print(data['longitude'])"` >/dev/null 2>&1
+asn=`python3 -c "import sys, json; file=open('ip.json'); dr=file.read(); data=json.loads(dr); print(data['asn'])"` >/dev/null 2>&1
 region=`grep -o '"region":"[^"]*' ip.json | grep -o '[^"]*$'`
 
 rm ip.json
 
 # All of those \033 you see are cursor positions. Here is a good tutorial for it: https://thoughtsordiscoveries.wordpress.com/2017/04/26/set-and-read-cursor-position-in-terminal-windows-and-linux/
-echo -e "\n`cat ~/.local/share/ipfetch/$country`\033[s \033[9A Ip: $ip\033[u\033[8A  Continent: $continent\033[u\033[7A  Country: $country\033[u\033[6A  Region: $region\033[u\033[5A  City: $city\033[u\033[4A  ISP: $isp\033[u\033[3A  Timezone: $timezone\033[u\033[2A  Latitude: $latitude\033[u\033[1A  Longitude: $longitude\033[u \033[10A -------------------- \033[u \n"
+echo -e "\n`cat ~/.local/share/ipfetch/$country`\033[s \033[9A Ip: $ip\033[u\033[8A  Continent: $continent\033[u\033[7A  Country: $country\033[u\033[6A  Region: $region\033[u\033[5A  City: $city\033[u\033[4A  ISP: $isp\033[u\033[3A  Timezone: $timezone\033[u\033[2A  Latitude: $latitude\033[u\033[1A  Longitude: $longitude\033[u  ASN: $asn \033[u \033[10A -------------------- \033[u \n"
