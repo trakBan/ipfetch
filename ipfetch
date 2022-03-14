@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-if [ $1 == "-ip" ] >/dev/null 2>&1 ; then
+if [ "$1" == "-ip" ] >/dev/null 2>&1 ; then
 	wget https://ip.seeip.org/geoip/$2 -O ip.json >/dev/null 2>&1 || exit 1
 fi
 
@@ -26,4 +26,14 @@ region=`sed -nr 's/.+"region":"([^"]*).+/\1/p' ip.json`
 rm ip.json
 
 # All of those \033 you see are cursor positions. Here is a good tutorial for it: https://thoughtsordiscoveries.wordpress.com/2017/04/26/set-and-read-cursor-position-in-terminal-windows-and-linux/
-echo -e "\n`cat ~/.local/share/ipfetch/$country`\033[s \033[9A Ip: $ip\033[u\033[8A  Continent: $continent\033[u\033[7A  Country: $country\033[u\033[6A  Region: $region\033[u\033[5A  City: $city\033[u\033[4A  ISP: $isp\033[u\033[3A  Timezone: $timezone\033[u\033[2A  Latitude: $latitude\033[u\033[1A  Longitude: $longitude\033[u  ASN: $asn \033[u \033[10A -------------------- \033[u \n"
+echo -e "\n`cat ~/.local/share/ipfetch/$country`\\033[s \033[9A Ip: $ip\
+	\033[u\033[8A  Continent: $continent\033\
+	[u\033[7A  Country: $country\
+	\033[u\033[6A  Region: $region\
+	\033[u\033[5A  City: $city\
+	\033[u\033[4A  ISP: $isp\
+	\033[u\033[3A  Timezone: $timezone\
+	\033[u\033[2A  Latitude: $latitude\
+	\033[u\033[1A  Longitude: $longitude
+	\033[u  ASN: $asn\
+	\033[u \033[10A -------------------- \033[u \n"
