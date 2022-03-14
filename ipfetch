@@ -6,6 +6,12 @@ if [ "$1" == "-ip" ] >/dev/null 2>&1 ; then
 	wget https://ip.seeip.org/geoip/$2 -O "$tempfile" >/dev/null 2>&1 || exit 1
 fi
 
+if [ "$1" == "-h" ] >/dev/null 2>&1 ; then
+	echo "-ip {ip address} - This will lookup the ip address you have chosen"
+	echo "-h - This will print the usage"
+	exit 1
+fi
+
 # If no arguments were passed it will default to your own ip
 [ $# -eq 0 ] >/dev/null 2>&1 && wget https://ip.seeip.org/geoip/ -O "$tempfile" >/dev/null 2>&1
 
