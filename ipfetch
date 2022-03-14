@@ -12,16 +12,16 @@ sed -i 's/ /_/g' ip.json
 sed -i 's/\\//g' ip.json
 
 # Uses grep to extract json data
-ip=`grep -o '"ip":"[^"]*' ip.json | grep -o '[^"]*$'`
-continent=`grep -o '"continent_code":"[^"]*' ip.json | grep -o '[^"]*$'`
-city=`grep -o '"city":"[^"]*' ip.json | grep -o '[^"]*$'`
-isp=`grep -o '"organization":"[^"]*' ip.json | grep -o '[^"]*$'`
-country=`grep -o '"country":"[^"]*' ip.json | grep -o '[^"]*$'`
-timezone=`grep -o '"timezone":"[^"]*' ip.json | grep -o '[^"]*$'`
-latitude=`python3 -c "import sys, json; file=open('ip.json'); dr=file.read(); data=json.loads(dr); print(data['latitude'])"` >/dev/null 2>&1
-longitude=`python3 -c "import sys, json; file=open('ip.json'); dr=file.read(); data=json.loads(dr); print(data['longitude'])"` >/dev/null 2>&1
-asn=`python3 -c "import sys, json; file=open('ip.json'); dr=file.read(); data=json.loads(dr); print(data['asn'])"` >/dev/null 2>&1
-region=`grep -o '"region":"[^"]*' ip.json | grep -o '[^"]*$'`
+ip=`sed -nr 's/.+"ip":"([0-9\.]+).+/\1/p' ip.json`
+continent=`sed -nr 's/.+"continent_code":"([^"]*).+/\1/p' ip.json`
+city=`sed -nr 's/.+"city":"([^"]*).+/\1/p' ip.json`
+isp=`sed -nr 's/.+"organization":"([^"]*).+/\1/p' ip.json`
+country=`sed -nr 's/.+"country":"([^"]*).+/\1/p' ip.json`
+timezone=`sed -nr 's/.+"timezone":"([^"]*).+/\1/p' ip.json`
+latitude=`sed -nr 's/.+"latitude":([^,]*).+/\1/p' ip.json`
+longitude=`sed -nr 's/.+"longitude":([^,]*).+/\1/p' ip.json`
+asn=`sed -nr 's/.+"asn":([^,]*).+/\1/p' ip.json`
+region=`sed -nr 's/.+"region":"([^"]*).+/\1/p' ip.json`
 
 rm ip.json
 
