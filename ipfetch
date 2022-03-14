@@ -13,7 +13,7 @@ fi
 sed -i 's/ /_/g' "$tempfile"
 sed -i 's/\\//g' "$tempfile"
 
-# Uses grep to extract json data
+# Uses sed to extract json data
 ip=`sed -nr 's/.+"ip":"([0-9\.]+).+/\1/p' "$tempfile"`
 continent=`sed -nr 's/.+"continent_code":"([^"]*).+/\1/p' "$tempfile"`
 city=`sed -nr 's/.+"city":"([^"]*).+/\1/p' "$tempfile"`
