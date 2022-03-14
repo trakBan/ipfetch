@@ -5,7 +5,7 @@ if [ $1 == "-ip" ] >/dev/null 2>&1 ; then
 fi
 
 # If no arguments were passed it will default to your own ip
-[ "$1" == "" ] >/dev/null 2>&1 && wget https://ip.seeip.org/geoip/ -O ip.json >/dev/null 2>&1
+[ $# -eq 0 ] >/dev/null 2>&1 && wget https://ip.seeip.org/geoip/ -O ip.json >/dev/null 2>&1
 
 # Replacing spaces with underscores
 sed -i 's/ /_/g' ip.json
