@@ -1,44 +1,81 @@
 #!/usr/bin/env bash
 
 tempfile=`mktemp -u /tmp/ipfetch.XXXXXX`
+IP=""
 
-if [ "$1" == "-ip" ] >/dev/null 2>&1 ; then
-	wget https://ip.seeip.org/geoip/$2 -O "$tempfile" >/dev/null 2>&1 || exit 1
-fi
+usage() {
+	cat <<- _end_of_usage
+	Usage: ipfetch [OPTIONS]...
+	Neofetch like tool that can lookup IPs.
 
-# If no arguments were passed it will default to your own ip
-[ $# -eq 0 ] >/dev/null 2>&1 && wget https://ip.seeip.org/geoip/ -O "$tempfile" >/dev/null 2>&1
+	Options:
+	    -h          print this text and exit
+	    -ip <IP>    ip address to fetch (fetches own ip by default)
+	_end_of_usage
+}
 
-# Replacing spaces with underscores
-sed -i 's/ /_/g' "$tempfile"
-sed -i 's/\\//g' "$tempfile"
+error() {
+	echo "$1" && exit 1
+}
 
-# Uses sed to extract json data
-ip=`sed -nr 's/.+"ip":"([0-9\.]+).+/\1/p' "$tempfile"`
-continent=`sed -nr 's/.+"continent_code":"([^"]*).+/\1/p' "$tempfile"`
-city=`sed -nr 's/.+"city":"([^"]*).+/\1/p' "$tempfile"`
-isp=`sed -nr 's/.+"organization":"([^"]*).+/\1/p' "$tempfile"`
-country=`sed -nr 's/.+"country":"([^"]*).+/\1/p' "$tempfile"`
-timezone=`sed -nr 's/.+"timezone":"([^"]*).+/\1/p' "$tempfile"`
-latitude=`sed -nr 's/.+"latitude":([^,]*).+/\1/p' "$tempfile"`
-longitude=`sed -nr 's/.+"longitude":([^,]*).+/\1/p' "$tempfile"`
-asn=`sed -nr 's/.+"asn":([^,]*).+/\1/p' "$tempfile"`
-region=`sed -nr 's/.+"region":"([^"]*).+/\1/p' "$tempfile"`
+parse_args() {
+	# if no arguments passed, use current ip
+	[ $# -eq 0 ] && return 0
+	
+	while [ $# -ne 0 ]
+	do
+		case "$1" in
+			"-h")  usage && exit 0 ;;
+			"-ip") 
+				IP=$2
+				local ip_regex='^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$'
+				[[ ! "$IP" =~ $ip_regex ]] && error "Invalid IP passed as argument!"
+				shift
+				;;
+			*) error "Unknown argument $1!" ;;
+		esac
+		shift
+	done
+}
 
-rm "$tempfile"
+ipfetch() {
+	# if no ip is passed, the IP variable is empty, so the api link will work as expected
+	wget https://ip.seeip.org/geoip/$IP -O "$tempfile" >/dev/null 2>&1 || error "Unknown error has occurred!"
 
-# All of those \033 you see are cursor positions. Here is a good tutorial for it: https://thoughtsordiscoveries.wordpress.com/2017/04/26/set-and-read-cursor-position-in-terminal-windows-and-linux/
-echo -e "\n`cat /usr/share/ipfetch/$country`\
-	\033[s \033[9A Ip: $ip\
-	\033[u\033[8A  Continent: $continent\
-	\033[u\033[7A  Country: $country\
-	\033[u\033[6A  Region: $region\
-	\033[u\033[5A  City: $city\
-	\033[u\033[4A  ISP: $isp\
-	\033[u\033[3A  Timezone: $timezone\
-	\033[u\033[2A  Latitude: $latitude\
-	\033[u\033[1A  Longitude: $longitude\
-	\033[u  ASN: $asn\
-	\033[u \033[10A -------------------- \
-	\033[u \n"
+	# Replacing spaces with underscores
+	sed -i 's/ /_/g' "$tempfile"
+	sed -i 's/\\//g' "$tempfile"
 
+	# Uses sed to extract json data
+	# this SHOULD be done more cleanly in a for
+	local ip=`sed -nr 's/.+"ip":"([0-9\.]+).+/\1/p' "$tempfile"`
+	local continent=`sed -nr 's/.+"continent_code":"([^"]*).+/\1/p' "$tempfile"`
+	local city=`sed -nr 's/.+"city":"([^"]*).+/\1/p' "$tempfile"`
+	local isp=`sed -nr 's/.+"organization":"([^"]*).+/\1/p' "$tempfile"`
+	local country=`sed -nr 's/.+"country":"([^"]*).+/\1/p' "$tempfile"`
+	local timezone=`sed -nr 's/.+"timezone":"([^"]*).+/\1/p' "$tempfile"`
+	local latitude=`sed -nr 's/.+"latitude":([^,]*).+/\1/p' "$tempfile"`
+	local longitude=`sed -nr 's/.+"longitude":([^,]*).+/\1/p' "$tempfile"`
+	local asn=`sed -nr 's/.+"asn":([^,]*).+/\1/p' "$tempfile"`
+	local region=`sed -nr 's/.+"region":"([^"]*).+/\1/p' "$tempfile"`
+
+	rm "$tempfile"
+
+	# All of those \033 you see are cursor positions. Here is a good tutorial for it: https://thoughtsordiscoveries.wordpress.com/2017/04/26/set-and-read-cursor-position-in-terminal-windows-and-linux/
+	echo -e "\n`cat /usr/share/ipfetch/$country`\
+		\033[s \033[9A Ip: $ip\
+		\033[u\033[8A  Continent: $continent\
+		\033[u\033[7A  Country: $country\
+		\033[u\033[6A  Region: $region\
+		\033[u\033[5A  City: $city\
+		\033[u\033[4A  ISP: $isp\
+		\033[u\033[3A  Timezone: $timezone\
+		\033[u\033[2A  Latitude: $latitude\
+		\033[u\033[1A  Longitude: $longitude\
+		\033[u  ASN: $asn\
+		\033[u \033[10A -------------------- \
+		\033[u \n"
+}
+
+parse_args $@
+ipfetch
