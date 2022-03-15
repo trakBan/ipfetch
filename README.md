@@ -1,5 +1,5 @@
 # ipfetch
-Neofetch like tool that can lookup IPs. 🌎 Over 150 countries supported!
+Neofetch like tool that can lookup IPs. 🌎 Over 180 countries supported!
 
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/81049050/158081113-9c14ac50-5f8d-42e1-ba01-da2d873ea520.gif)
 
@@ -9,7 +9,7 @@ Neofetch like tool that can lookup IPs. 🌎 Over 150 countries supported!
 ```
 git clone https://github.com/trakBan/ipfetch.git
 cd ipfetch
-# You will need sudo
+# You will need to be in root
 sudo sh setup.sh
 ```
 ### One line
