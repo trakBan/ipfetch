@@ -2,12 +2,22 @@
 
 tempfile=`mktemp -u /tmp/ipfetch.XXXXXX`
 IP=""
+  
+if [ "$1" == "-ip" ] >/dev/null 2>&1 ; then
+	wget https://ip.seeip.org/geoip/$2 -O "$tempfile" >/dev/null 2>&1 || exit 1
+fi
+
+if [ "$1" == "-h" ] >/dev/null 2>&1 ; then
+	echo "-ip {ip address} - This will lookup the ip address you have chosen"
+	echo "-h - This will print the usage"
+	exit 1
+fi
 
 usage() {
 	cat <<- _end_of_usage
+  
 	Usage: ipfetch [OPTIONS]...
 	Neofetch like tool that can lookup IPs.
-
 	Options:
 	    -h          print this text and exit
 	    -ip <IP>    ip address to fetch (fetches own ip by default)
