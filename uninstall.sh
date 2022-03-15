@@ -6,3 +6,5 @@ fi
 
 rm -r /usr/share/ipfetch
 rm /usr/bin/ipfetch
+
+echo "ipfetch has been sucesfully uninstalled."

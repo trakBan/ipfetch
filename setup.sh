@@ -9,3 +9,5 @@ chmod -R 755 /usr/share/ipfetch
 
 cp ./ipfetch /usr/bin/
 chmod -R 755 /usr/bin/ipfetch
+
+echo "ipfetch has been sucesfully installed."
