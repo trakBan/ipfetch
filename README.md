@@ -20,3 +20,10 @@ sudo sh setup.sh
 -ip {ip address} - This will lookup the ip address you have chosen
 -h - This will display usage
 ```
+
+### Contributors
+Anyone that sumbits issues, pull requests or any other form of help or criticism is greatly appreciated. This is a list of people who contributed code to this project.
+
+[Costineo][https://github.com/Costinteo]
+[Yusuf Papurcu](https://github.com/yusufpapurcu)
+[insanolanbiri](https://github.com/insanolanbiri)
