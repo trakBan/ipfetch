@@ -26,12 +26,7 @@ parse_args() {
 	do
 		case "$1" in
 			"-h")  usage && exit 0 ;;
-			"-ip") 
-				IP=$2
-				local ip_regex='^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$'
-				[[ ! "$IP" =~ $ip_regex ]] && error "Invalid IP passed as argument!"
-				shift
-				;;
+			"-ip") IP=$2 && shift ;;
 			*) error "Unknown argument $1!" ;;
 		esac
 		shift
@@ -40,7 +35,7 @@ parse_args() {
 
 ipfetch() {
 	# if no ip is passed, the IP variable is empty, so the api link will work as expected
-	wget https://ip.seeip.org/geoip/$IP -O "$tempfile" >/dev/null 2>&1 || error "Unknown error has occurred!"
+	wget https://ip.seeip.org/geoip/$IP -O "$tempfile" >/dev/null 2>&1 || error "IP is invalid or API is down!"
 
 	# Replacing spaces with underscores
 	sed -i 's/ /_/g' "$tempfile"
@@ -48,7 +43,7 @@ ipfetch() {
 
 	# Uses sed to extract json data
 	# this SHOULD be done more cleanly in a for
-	local ip=`sed -nr 's/.+"ip":"([0-9\.]+).+/\1/p' "$tempfile"`
+	local ip=`sed -nr 's/.+"ip":"([^"]+).+/\1/p' "$tempfile"`
 	local continent=`sed -nr 's/.+"continent_code":"([^"]*).+/\1/p' "$tempfile"`
 	local city=`sed -nr 's/.+"city":"([^"]*).+/\1/p' "$tempfile"`
 	local isp=`sed -nr 's/.+"organization":"([^"]*).+/\1/p' "$tempfile"`
@@ -77,5 +72,5 @@ ipfetch() {
 		\033[u \n"
 }
 
-parse_args $@
+parse_args "$@"
 ipfetch
