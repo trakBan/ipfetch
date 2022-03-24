@@ -4,7 +4,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-rm -r /usr/share/ipfetch
+rm /usr/share/ipfetch/*
+rmdir /usr/share/ipfetch
 rm /usr/bin/ipfetch
 
 echo "ipfetch has been sucesfully uninstalled."
