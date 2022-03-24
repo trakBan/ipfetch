@@ -25,7 +25,7 @@ Options:
 ```
 
 ## Contributors
-Anyone that sumbits issues, pull requests or any other form of help or criticism is greatly appreciated. This is a list of people who contributed code to this project:
+Anyone that submits issues, pull requests or any other form of help or criticism is greatly appreciated. This is a list of people who contributed code to this project:
 
 - [Costineo](https://github.com/Costinteo)
 - [Yusuf Papurcu](https://github.com/yusufpapurcu)
