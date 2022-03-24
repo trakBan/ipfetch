@@ -15,15 +15,18 @@ sudo sh setup.sh
 ### One line
 ``` git clone https://github.com/trakBan/ipfetch.git && cd ipfetch && sudo sh setup.sh ```
 
-# Usage
+## Usage
 ```
--ip {ip address} - This will lookup the ip address you have chosen
--h - This will display usage
+Usage: ipfetch [OPTIONS]...
+Neofetch like tool that can lookup IPs.
+Options:
+    -h          print this text and exit
+    -ip <IP>    ip address to fetch (fetches own ip by default)
 ```
 
-### Contributors
-Anyone that sumbits issues, pull requests or any other form of help or criticism is greatly appreciated. This is a list of people who contributed code to this project.
+## Contributors
+Anyone that submits issues, pull requests or any other form of help or criticism is greatly appreciated. This is a list of people who contributed code to this project:
 
-[Costineo](https://github.com/Costinteo)
-[Yusuf Papurcu](https://github.com/yusufpapurcu)
-[insanolanbiri](https://github.com/insanolanbiri)
+- [Costineo](https://github.com/Costinteo)
+- [Yusuf Papurcu](https://github.com/yusufpapurcu)
+- [insanolanbiri](https://github.com/insanolanbiri)
