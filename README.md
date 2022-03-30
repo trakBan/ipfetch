@@ -15,6 +15,15 @@ sudo sh setup.sh
 ### One line
 ``` git clone https://github.com/trakBan/ipfetch.git && cd ipfetch && sudo sh setup.sh ```
 
+### Install jq
+
+| Distro        	| Command               	|
+|----------------	|--------------------------	|
+| Debian, Ubuntu 	| `sudo apt install jq`    	|
+| Fedora         	| `sudo dnf install jq`    	|
+| Arch Linux     	| `sudo pacman -S jq`      	|
+| openSUSE       	| `sudo zypper install jq` 	|
+
 ## Usage
 ```
 Usage: ipfetch [OPTIONS]...
