@@ -34,6 +34,11 @@ parse_args() {
 }
 
 ipfetch() {
+	if [ ! -x "$(command -v jq)" ]; then
+  		echo 'Note: jq looks like not installed. to run ipfetch, jq needs to be installed.' >&2
+  		exit 1
+	fi
+	
 	# if no ip is passed, the IP variable is empty, so the api link will work as expected
 	wget https://ip.seeip.org/geoip/$IP -O "$tempfile" >/dev/null 2>&1 || error "IP is invalid or API is down!"
 
@@ -43,20 +48,21 @@ ipfetch() {
 
 	# Uses sed to extract json data
 	# this SHOULD be done more cleanly in a for
-	local ip=`sed -nr 's/.+"ip":"([^"]+).+/\1/p' "$tempfile"`
-	local country=`sed -nr 's/.+"country":"([^"]*).+/\1/p' "$tempfile"`
-	local timezone=`sed -nr 's/.+"timezone":"([^"]*).+/\1/p' "$tempfile"`
-	local latitude=`sed -nr 's/.+"latitude":([^,]*).+/\1/p' "$tempfile"`
-	local longitude=`sed -nr 's/.+"longitude":([^,]*).+/\1/p' "$tempfile"`
-	local asn=`sed -nr 's/.+"asn":([^,]*).+/\1/p' "$tempfile"`
+	local ip=`jq -r '.ip' "$tempfile"`
+	local country=`jq -r '.country' "$tempfile"`
+	local timezone=`jq -r '.timezone' "$tempfile"`
+	local latitude=`jq -r '.latitude' "$tempfile"`
+	local longitude=`jq -r '.longitude' "$tempfile"`
+	local asn=`jq -r '.asn' "$tempfile"`
 
 	# Using sed to remove underscores in order to get cleaner output
 	# I will make this far more efficent in the next update
 	sed -i 's/_/ /g' "$tempfile"
-	local continent=`sed -nr 's/.+"continent_code":"([^"]*).+/\1/p' "$tempfile"`
-	local city=`sed -nr 's/.+"city":"([^"]*).+/\1/p' "$tempfile"`
-	local isp=`sed -nr 's/.+"organization":"([^"]*).+/\1/p' "$tempfile"`
-	local region=`sed -nr 's/.+"region":"([^"]*).+/\1/p' "$tempfile"`
+
+	local continent=`jq -r '."continent code"' "$tempfile"`
+	local city=`jq -r '.city' "$tempfile"`
+	local isp=`jq -r '.organization' "$tempfile"`
+	local region=`jq -r '.region' "$tempfile"`
 
 	rm "$tempfile"
 
