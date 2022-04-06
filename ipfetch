@@ -53,12 +53,14 @@ ipfetch() {
 	local isp=`sed -nr 's/.+"organization":"([^"]*).+/\1/p' "$tempfile"`
 	local region=`sed -nr 's/.+"region":"([^"]*).+/\1/p' "$tempfile"`
 
+	local flag=`echo "$country" | sed -nr 's/\s/_/p'`
+
 	rm "$tempfile"
 
 	# All of those \033 you see are cursor positions.
 	#Here is a good tutorial for it: https://thoughtsordiscoveries.wordpress.com/2017/04/26/set-and-read-cursor-position-in-terminal-windows-and-linux/
 	
-	echo -e "\n`cat /usr/share/ipfetch/$country`\
+	echo -e "\n`cat /usr/share/ipfetch/$flag`\
 		\033[9D\033[s \033[9A Ip: $ip\
 		\033[u\033[8A  Continent: $continent\
 		\033[u\033[7A  Country: $country\
