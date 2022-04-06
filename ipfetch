@@ -37,8 +37,7 @@ ipfetch() {
 	# if no ip is passed, the IP variable is empty, so the api link will work as expected
 	wget https://ip.seeip.org/geoip/$IP -O "$tempfile" >/dev/null 2>&1 || error "IP is invalid or API is down!"
 
-	# Replacing spaces with underscores
-	sed -i 's/ /_/g' "$tempfile"
+	# delete backslashes
 	sed -i 's/\\//g' "$tempfile"
 
 	# Uses sed to extract json data
@@ -49,10 +48,6 @@ ipfetch() {
 	local latitude=`sed -nr 's/.+"latitude":([^,]*).+/\1/p' "$tempfile"`
 	local longitude=`sed -nr 's/.+"longitude":([^,]*).+/\1/p' "$tempfile"`
 	local asn=`sed -nr 's/.+"asn":([^,]*).+/\1/p' "$tempfile"`
-
-	# Using sed to remove underscores in order to get cleaner output
-	# I will make this far more efficent in the next update
-	sed -i 's/_/ /g' "$tempfile"
 	local continent=`sed -nr 's/.+"continent_code":"([^"]*).+/\1/p' "$tempfile"`
 	local city=`sed -nr 's/.+"city":"([^"]*).+/\1/p' "$tempfile"`
 	local isp=`sed -nr 's/.+"organization":"([^"]*).+/\1/p' "$tempfile"`
