@@ -53,7 +53,7 @@ ipfetch() {
 	local isp=`sed -nr 's/.+"organization":"([^"]*).+/\1/p' "$tempfile"`
 	local region=`sed -nr 's/.+"region":"([^"]*).+/\1/p' "$tempfile"`
 
-	local flag=`echo "$country" | sed -r 's/ /_/'`
+	local flag=`echo "$country" | sed -r 's/ /_/g'`
 
 	rm "$tempfile"
 
