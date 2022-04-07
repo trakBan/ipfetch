@@ -37,8 +37,7 @@ ipfetch() {
 	# if no ip is passed, the IP variable is empty, so the api link will work as expected
 	wget https://ip.seeip.org/geoip/$IP -O "$tempfile" >/dev/null 2>&1 || error "IP is invalid or API is down!"
 
-	# Replacing spaces with underscores
-	sed -i 's/ /_/g' "$tempfile"
+	# delete backslashes
 	sed -i 's/\\//g' "$tempfile"
 
 	# Uses sed to extract json data
@@ -49,21 +48,19 @@ ipfetch() {
 	local latitude=`sed -nr 's/.+"latitude":([^,]*).+/\1/p' "$tempfile"`
 	local longitude=`sed -nr 's/.+"longitude":([^,]*).+/\1/p' "$tempfile"`
 	local asn=`sed -nr 's/.+"asn":([^,]*).+/\1/p' "$tempfile"`
-
-	# Using sed to remove underscores in order to get cleaner output
-	# I will make this far more efficent in the next update
-	sed -i 's/_/ /g' "$tempfile"
 	local continent=`sed -nr 's/.+"continent_code":"([^"]*).+/\1/p' "$tempfile"`
 	local city=`sed -nr 's/.+"city":"([^"]*).+/\1/p' "$tempfile"`
 	local isp=`sed -nr 's/.+"organization":"([^"]*).+/\1/p' "$tempfile"`
 	local region=`sed -nr 's/.+"region":"([^"]*).+/\1/p' "$tempfile"`
+
+	local flag=`echo "$country" | sed -r 's/ /_/g'`
 
 	rm "$tempfile"
 
 	# All of those \033 you see are cursor positions.
 	#Here is a good tutorial for it: https://thoughtsordiscoveries.wordpress.com/2017/04/26/set-and-read-cursor-position-in-terminal-windows-and-linux/
 	
-	echo -e "\n`cat /usr/share/ipfetch/$country`\
+	echo -e "\n`cat /usr/share/ipfetch/$flag`\
 		\033[9D\033[s \033[9A Ip: $ip\
 		\033[u\033[8A  Continent: $continent\
 		\033[u\033[7A  Country: $country\
