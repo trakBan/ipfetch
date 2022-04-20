@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+mkdir -p ~/.local/bin
+
 mkdir -p ~/.local/share/ipfetch
 cp ./flags/* ~/.local/share/ipfetch/
 chmod -R 755 ~/.local/share/ipfetch
