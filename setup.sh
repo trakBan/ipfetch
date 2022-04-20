@@ -10,3 +10,4 @@ cp ./ipfetch ~/.local/bin/
 chmod 755 ~/.local/bin/ipfetch
 
 echo "ipfetch has been successfully installed."
+echo "please make sure that $HOME/.local/bin is in your PATH."
