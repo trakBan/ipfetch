@@ -8,4 +8,4 @@ rm ~/.local/share/ipfetch/*
 rmdir ~/.local/share/ipfetch
 rm /usr/bin/ipfetch
 
-ipfetch || echo "ipfetch has been sucesfully uninstalled."
+ipfetch || echo "ipfetch has been successfully uninstalled."
