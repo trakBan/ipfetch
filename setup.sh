@@ -7,4 +7,4 @@ chmod -R 755 ~/.local/share/ipfetch
 cp ./ipfetch ~/.local/bin/
 chmod 755 ~/.local/bin/ipfetch
 
-echo "ipfetch has been succesfully installed."
+echo "ipfetch has been successfully installed."
