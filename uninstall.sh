@@ -6,6 +6,6 @@ fi
 
 rm ~/.local/share/ipfetch/*
 rmdir ~/.local/share/ipfetch
-rm /usr/bin/ipfetch
+rm ~/.local/bin/ipfetch
 
 ipfetch || echo "ipfetch has been successfully uninstalled."
