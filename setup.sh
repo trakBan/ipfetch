@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
-if [[ $EUID -ne 0 ]]; then
-   echo "Install script must be run as root" 
-   exit 1
-fi
 
-mkdir -p /usr/share/ipfetch
-cp ./flags/* /usr/share/ipfetch/
-chmod -R 755 /usr/share/ipfetch
+mkdir -p ~/.local/share/ipfetch
+cp ./flags/* ~/.local/share/ipfetch/
+chmod -R 755 ~/.local/share/ipfetch
 
-cp ./ipfetch /usr/bin/
-chmod 755 /usr/bin/ipfetch
+cp ./ipfetch ~/.local/bin/
+chmod 755 ~/.local/bin/ipfetch
 
-echo "ipfetch has been sucesfully installed."
+echo "ipfetch has been succesfully installed."
