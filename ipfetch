@@ -42,12 +42,9 @@ ipfetch() {
 	# if no ip is passed, the IP variable is empty, so the api link will work as expected
 	wget https://ip.seeip.org/geoip/$IP -O "$tempfile" >/dev/null 2>&1 || error "IP is invalid or API is down!"
 
-	# Replacing spaces with underscores
-	sed -i 's/ /_/g' "$tempfile"
+	# delete backslashes
 	sed -i 's/\\//g' "$tempfile"
 
-	# Uses sed to extract json data
-	# this SHOULD be done more cleanly in a for
 	local ip=`jq -r '.ip' "$tempfile"`
 	local country=`jq -r '.country' "$tempfile"`
 	local timezone=`jq -r '.timezone' "$tempfile"`
@@ -64,12 +61,14 @@ ipfetch() {
 	local isp=`jq -r '.organization' "$tempfile"`
 	local region=`jq -r '.region' "$tempfile"`
 
+	local flag=`echo "$country" | sed -r 's/ /_/g'`
+
 	rm "$tempfile"
 
 	# All of those \033 you see are cursor positions.
 	#Here is a good tutorial for it: https://thoughtsordiscoveries.wordpress.com/2017/04/26/set-and-read-cursor-position-in-terminal-windows-and-linux/
 	
-	echo -e "\n`cat /usr/share/ipfetch/$country`\
+	echo -e "\n`cat /usr/share/ipfetch/$flag`\
 		\033[9D\033[s \033[9A Ip: $ip\
 		\033[u\033[8A  Continent: $continent\
 		\033[u\033[7A  Country: $country\
