@@ -35,7 +35,7 @@ parse_args() {
 
 ipfetch() {
 	# if no ip is passed, the IP variable is empty, so the api link will work as expected
-	wget https://ip.seeip.org/geoip/$IP -O "$tempfile" >/dev/null 2>&1 || error "IP is invalid or API is down!"
+	wget https://api.seeip.org/geoip/$IP -O "$tempfile" >/dev/null 2>&1 || error "IP is invalid or API is down!"
 
 	# delete backslashes
 	sed -i 's/\\//g' "$tempfile"
