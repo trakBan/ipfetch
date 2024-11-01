@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-tempfile=`mktemp -u /tmp/ipfetch.XXXXXX`
 IP=""
 
 usage() {
@@ -35,27 +34,25 @@ parse_args() {
 
 ipfetch() {
 	# if no ip is passed, the IP variable is empty, so the api link will work as expected
-	wget https://api.seeip.org/geoip/$IP -O "$tempfile" >/dev/null 2>&1 || error "IP is invalid or API is down!"
+	ip_info=$(curl -sf https://api.seeip.org/geoip/$IP) || { error "Error: IP is invalid or API is down!"; }
 
-	# delete backslashes
-	sed -i 's/\\//g' "$tempfile"
+	# Remove any backslashes from the JSON response
+	ip_info=$(echo "$ip_info" | sed 's/\\//g')
 
-	# Uses sed to extract json data
-	# this SHOULD be done more cleanly in a for
-	local ip=`sed -nr 's/.+"ip":"([^"]+).+/\1/p' "$tempfile"`
-	local country=`sed -nr 's/.+"country":"([^"]*).+/\1/p' "$tempfile"`
-	local timezone=`sed -nr 's/.+"timezone":"([^"]*).+/\1/p' "$tempfile"`
-	local latitude=`sed -nr 's/.+"latitude":([^,]*).+/\1/p' "$tempfile"`
-	local longitude=`sed -nr 's/.+"longitude":([^,]*).+/\1/p' "$tempfile"`
-	local asn=`sed -nr 's/.+"asn":([^,]*).+/\1/p' "$tempfile"`
-	local continent=`sed -nr 's/.+"continent_code":"([^"]*).+/\1/p' "$tempfile"`
-	local city=`sed -nr 's/.+"city":"([^"]*).+/\1/p' "$tempfile"`
-	local isp=`sed -nr 's/.+"organization":"([^"]*).+/\1/p' "$tempfile"`
-	local region=`sed -nr 's/.+"region":"([^"]*).+/\1/p' "$tempfile"`
+	# Extracting each field using sed and assigning them to local variables
+	ip=$(echo "$ip_info" | sed -nr 's/.+"ip":"([^"]+).+/\1/p')
+	country=$(echo "$ip_info" | sed -nr 's/.+"country":"([^"]*)".+/\1/p')
+	timezone=$(echo "$ip_info" | sed -nr 's/.+"timezone":"([^"]*)".+/\1/p')
+	latitude=$(echo "$ip_info" | sed -nr 's/.+"latitude":([^,]*).+/\1/p')
+	longitude=$(echo "$ip_info" | sed -nr 's/.+"longitude":([^,]*).+/\1/p')
+	asn=$(echo "$ip_info" | sed -nr 's/.+"asn":([^,]*).+/\1/p')
+	continent=$(echo "$ip_info" | sed -nr 's/.+"continent_code":"([^"]*)".+/\1/p')
+	city=$(echo "$ip_info" | sed -nr 's/.+"city":"([^"]*)".+/\1/p')
+	isp=$(echo "$ip_info" | sed -nr 's/.+"organization":"([^"]*)".+/\1/p')
+	region=$(echo "$ip_info" | sed -nr 's/.+"region":"([^"]*)".+/\1/p')
 
-	local flag=`echo "$country" | sed -r 's/ /_/g'`
-
-	rm "$tempfile"
+	# Create a "flag" variable by replacing spaces with underscores in the country name
+	flag=$(echo "$country" | sed -r 's/ /_/g')
 
 	# All of those \033 you see are cursor positions.
 	#Here is a good tutorial for it: https://thoughtsordiscoveries.wordpress.com/2017/04/26/set-and-read-cursor-position-in-terminal-windows-and-linux/
