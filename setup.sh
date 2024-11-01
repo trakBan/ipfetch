@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
+# Function to display usage
+usage() {
+    echo "Usage: $0 [-t curl|wget]"
+    exit 1
+}
+
+# Check if the script is run as root
+if [[ $EUID -ne 0 ]]; then
+   echo "Install script must be run as root" 
+   exit 1
+fi
+
 if [[ $EUID -ne 0 ]]; then
    echo "Install script must be run as root" 
    exit 1
