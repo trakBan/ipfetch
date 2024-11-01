@@ -15,6 +15,15 @@ sudo ./setup.sh
 ### One line
 ``` git clone https://github.com/trakBan/ipfetch.git && cd ipfetch && sudo ./setup.sh ```
 
+### Choosing variant
+This script comes with a wget variant and a curl variant.
+The correct variant will be determined automatically based on which packages are installed.\
+If you manually want to specify the variant used, use parameter `-t` or `--type` to choose.
+
+```bash
+sudo setup.sh [-t curl|wget] [--type curl|wget]
+```
+
 ## Usage
 ```
 Usage: ipfetch [OPTIONS]...
