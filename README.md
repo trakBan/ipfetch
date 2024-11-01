@@ -10,10 +10,10 @@ Neofetch like tool that can lookup IPs. 🌎 Over 180 countries supported!
 git clone https://github.com/trakBan/ipfetch.git
 cd ipfetch
 # You will need to be in root
-sudo sh setup.sh
+sudo ./setup.sh
 ```
 ### One line
-``` git clone https://github.com/trakBan/ipfetch.git && cd ipfetch && sudo sh setup.sh ```
+``` git clone https://github.com/trakBan/ipfetch.git && cd ipfetch && sudo ./setup.sh ```
 
 ## Usage
 ```
@@ -30,3 +30,4 @@ Anyone that submits issues, pull requests or any other form of help or criticism
 - [Costineo](https://github.com/Costinteo)
 - [Yusuf Papurcu](https://github.com/yusufpapurcu)
 - [insanolanbiri](https://github.com/insanolanbiri)
+- [Marco Kraft](https://github.com/MaKraMc)
