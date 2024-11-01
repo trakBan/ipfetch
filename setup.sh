@@ -2,7 +2,7 @@
 
 # Function to display usage
 usage() {
-    echo "Usage: $0 [-t curl|wget]"
+    echo "Usage: $0 [-t curl|wget] [--type curl|wget]"
     exit 1
 }
 
@@ -21,15 +21,17 @@ fi
 variant=""
 
 # Parse command-line options
-while getopts ":t:" opt; do
-    case $opt in
-        t)
-            if [[ $OPTARG == "curl" || $OPTARG == "wget" ]]; then
-                variant=$OPTARG
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -t|--type)
+            shift  # Shift past the option
+            if [[ $1 == "curl" || $1 == "wget" ]]; then
+                variant=$1
             else
-                echo "Invalid option for -t. Please choose 'curl' or 'wget'."
+                echo "Invalid option for -t/--type. Please choose 'curl' or 'wget'."
                 usage
             fi
+            shift  # Shift past the argument
             ;;
         *)
             usage
